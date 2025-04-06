@@ -1,0 +1,64 @@
+// src/utils/api.ts
+// Base API URL - change this to your actual backend API URL when you have one
+export const API_BASE_URL = 'https://api.ariseapp.com';
+
+// API Endpoints
+export const API_ENDPOINTS = {
+  // User endpoints
+  USER_LOGIN: `${API_BASE_URL}/auth/login`,
+  USER_REGISTER: `${API_BASE_URL}/auth/register`,
+  USER_PROFILE: `${API_BASE_URL}/user/profile`,
+  USER_STATS: `${API_BASE_URL}/user/stats`,
+  
+  // Quest endpoints
+  QUESTS_LIST: `${API_BASE_URL}/quests`,
+  QUEST_COMPLETE: (id: string) => `${API_BASE_URL}/quests/${id}/complete`,
+  QUEST_CREATE: `${API_BASE_URL}/quests/create`,
+  
+  // Achievement endpoints
+  ACHIEVEMENTS_LIST: `${API_BASE_URL}/achievements`,
+  
+  // Sync endpoint
+  SYNC_DATA: `${API_BASE_URL}/sync`
+};
+
+// Helper function for making authenticated API requests
+export const makeAuthRequest = async (
+  url: string, 
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+  data?: any
+) => {
+  // Get user token from localStorage (you'll need to implement this)
+  const token = localStorage.getItem('arise_token');
+  
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  const config: RequestInit = {
+    method,
+    headers,
+    credentials: 'include',
+  };
+  
+  if (data) {
+    config.body = JSON.stringify(data);
+  }
+  
+  try {
+    const response = await fetch(url, config);
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API request failed:', error);
+    throw error;
+  }
+};
