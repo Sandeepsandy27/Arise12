@@ -1,0 +1,235 @@
+// src/contexts/UserContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+// Define data structures
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  level: number;
+  profileImage?: string;
+}
+
+export interface UserStats {
+  totalExp: number;
+  discipline: number;
+  knowledge: number;
+  productivity: number;
+  health: number;
+  focus: number;
+  streak: number;
+  completedQuests: number;
+  achievements: number;
+  consistencyScore: number;
+  weeklyActivity: Array<{ day: string; completed: number }>;
+}
+
+// Define context interfaces
+interface UserContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
+  register: (userData: { name: string; email: string; password: string }) => Promise<void>;
+  logout: () => void;
+  updateProfile: (userData: Partial<User>) => Promise<void>;
+  userStats: UserStats | null;
+  refreshUserStats: () => Promise<void>;
+}
+
+// Create the context with a default value
+const UserContext = createContext<UserContextType>({
+  user: null,
+  isAuthenticated: false,
+  isLoading: true,
+  login: async () => {},
+  register: async () => {},
+  logout: () => {},
+  updateProfile: async () => {},
+  userStats: null,
+  refreshUserStats: async () => {},
+});
+
+// Mock data for demo purposes
+const mockUser: User = {
+  id: '1',
+  name: 'Demo User',
+  email: 'demo@example.com',
+  level: 7,
+};
+
+const mockUserStats: UserStats = {
+  totalExp: 2340,
+  discipline: 65,
+  knowledge: 42,
+  productivity: 78,
+  health: 55,
+  focus: 61,
+  streak: 7,
+  completedQuests: 34,
+  achievements: 12,
+  consistencyScore: 72,
+  weeklyActivity: [
+    { day: 'Mon', completed: 5 },
+    { day: 'Tue', completed: 7 },
+    { day: 'Wed', completed: 4 },
+    { day: 'Thu', completed: 6 },
+    { day: 'Fri', completed: 3 },
+    { day: 'Sat', completed: 2 },
+    { day: 'Sun', completed: 1 },
+  ],
+};
+
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [userStats, setUserStats] = useState<UserStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Check for saved auth state on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // In a real app, validate token with backend
+        const savedToken = localStorage.getItem('arise_token');
+        
+        if (savedToken) {
+          // Simulating auth for demo
+          setUser(mockUser);
+          setUserStats(mockUserStats);
+        }
+      } catch (error) {
+        console.error('Authentication check failed:', error);
+        localStorage.removeItem('arise_token');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    checkAuth();
+  }, []);
+  
+  const login = async (credentials: { email: string; password: string }) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call with timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // For demo, just check email to simulate login
+      if (credentials.email) {
+        // Mock successful login
+        const mockToken = 'mock-jwt-token-' + Date.now();
+        localStorage.setItem('arise_token', mockToken);
+        setUser(mockUser);
+        setUserStats(mockUserStats);
+      } else {
+        throw new Error('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const register = async (userData: { name: string; email: string; password: string }) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call with timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create new user (mock)
+      const newUser: User = {
+        id: 'user-' + Date.now(),
+        name: userData.name,
+        email: userData.email,
+        level: 1,
+      };
+      
+      // Mock successful registration and login
+      const mockToken = 'mock-jwt-token-' + Date.now();
+      localStorage.setItem('arise_token', mockToken);
+      setUser(newUser);
+      
+      // New user starts with empty stats
+      const newUserStats: UserStats = {
+        ...mockUserStats,
+        totalExp: 0,
+        discipline: 10,
+        knowledge: 10,
+        productivity: 10,
+        health: 10,
+        focus: 10,
+        streak: 0,
+        completedQuests: 0,
+        achievements: 0,
+        consistencyScore: 0,
+      };
+      
+      setUserStats(newUserStats);
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const logout = () => {
+    localStorage.removeItem('arise_token');
+    setUser(null);
+    setUserStats(null);
+  };
+  
+  const updateProfile = async (userData: Partial<User>) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call with timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Update user data (mock)
+      if (user) {
+        const updatedUser = {
+          ...user,
+          ...userData,
+        };
+        setUser(updatedUser);
+      }
+    } catch (error) {
+      console.error('Profile update failed:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const refreshUserStats = async () => {
+    try {
+      // In a real app, fetch from API
+      // For demo, just update with mock data
+      setUserStats(mockUserStats);
+    } catch (error) {
+      console.error('Failed to refresh user stats:', error);
+    }
+  };
+  
+  return (
+    <UserContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isLoading,
+        login,
+        register,
+        logout,
+        updateProfile,
+        userStats,
+        refreshUserStats,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUser = () => useContext(UserContext);
