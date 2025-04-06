@@ -1,0 +1,166 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 14% 6%;
+    --foreground: 210 20% 98%;
+
+    --card: 224 14% 10%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 224 14% 8%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 205 100% 65%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 220 10% 16%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 10% 16%;
+    --muted-foreground: 215 20% 70%;
+
+    --accent: 240 10% 16%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 14% 14%;
+    --input: 220 14% 14%;
+    --ring: 205 100% 65%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border selection:bg-solo-blue/20 selection:text-white;
+  }
+  
+  html, body, #root {
+    @apply h-full bg-solo-dark text-foreground antialiased overflow-x-hidden scroll-smooth font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-solo-card bg-opacity-80 backdrop-blur-md border border-solo-light-gray/20 shadow-card rounded-xl;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px rgba(77, 172, 255, 0.6);
+  }
+  
+  .blue-glow {
+    box-shadow: 0 0 15px 2px rgba(77, 172, 255, 0.3);
+  }
+  
+  .blue-stroke {
+    -webkit-text-stroke: 1px rgba(77, 172, 255, 0.7);
+  }
+  
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  
+  .h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold;
+  }
+  
+  .h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+  }
+  
+  .h3 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold;
+  }
+  
+  .h4 {
+    @apply text-lg md:text-xl font-semibold;
+  }
+}
+
+@layer utilities {
+  .clip-hex {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  
+  .bg-animated-gradient {
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+  
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4DACFF;
+}
+
+/* Custom font declarations */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+}
+
+@font-face {
+  font-family: 'Rajdhani';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+}
+
+.font-sans {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-display {
+  font-family: 'Rajdhani', sans-serif;
+}
