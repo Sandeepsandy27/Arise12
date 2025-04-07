@@ -1,0 +1,30 @@
+name: Build and Upload Artifact
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Build Script
+        run: |
+          mkdir -p build
+          echo "This is a test artifact" > build/output.txt
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: my-artifact                # Name of the artifact
+          path: build/                     # Directory or file to upload
+          if-no-files-found: warn          # Options: warn, error, ignore
+          retention-days: 30               # Valid range: 1-90
+          compression-level: 6             # Range: 0 (none) to 9 (best)
+          overwrite: true                  # Overwrite if artifact with same name exists
+          include-hidden-files: false      # Whether to include hidden files
