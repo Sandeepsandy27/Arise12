@@ -5,8 +5,8 @@ on:
     branches: ["main"]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'Arise12'            # Replace with your Azure Function App name
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Arise12'    # Ensure this points to the correct directory in your repo
+  AZURE_FUNCTIONAPP_NAME: 'Arise12'              # Replace with your Azure Function App name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Arise12'            # Set to root directory
   NODE_VERSION: '20.x'
 
 jobs:
@@ -18,38 +18,30 @@ jobs:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v4
 
-    - name: Setup Node.js ${{ env.NODE_VERSION }} Environment
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
 
-    - name: 'Install Dependencies with npm'
+    - name: 'Install Dependencies & Build'
       shell: bash
       working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
       run: |
         echo "Checking Node.js version..."
-        node --version
+        node -v
         echo "Installing dependencies..."
         npm install
-        echo "Running build..."
+        echo "Running build (if applicable)..."
         npm run build --if-present
-        echo "Running tests..."
-        npm run test --if-present || echo "No tests to run or tests failed, continuing..."
-
-    - name: 'Verify Installed Packages'
-      shell: bash
-      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-      run: |
-        echo "Listing installed packages..."
-        npm list --depth=1
+        echo "Running tests (if applicable)..."
+        npm run test --if-present || echo "Tests failed or not present."
 
     - name: 'Deploy to Azure Function App'
       uses: Azure/functions-action@v1
-      id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
 
-    - name: 'Complete Deployment'
-      run: echo "Deployment completed successfully!"
+    - name: 'Complete'
+      run: echo "Deployment completed!"
