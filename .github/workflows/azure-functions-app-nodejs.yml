@@ -5,8 +5,8 @@ on:
     branches: ["main"]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'Arise12'              # Replace with your Azure Function App name
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Arise12'            # Set to root directory
+  AZURE_FUNCTIONAPP_NAME: 'Arise12'              # Your Azure Function App name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'            # Using root directory
   NODE_VERSION: '20.x'
 
 jobs:
