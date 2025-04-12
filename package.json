@@ -1,0 +1,19 @@
+{
+  "name": "arise12-function-app",
+  "version": "1.0.0",
+  "description": "Azure Function App for Arise12",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "build": "echo 'No build step defined'",
+    "test": "echo 'No tests defined'"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "azure-functions-core-tools": "^4.0.5198"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
