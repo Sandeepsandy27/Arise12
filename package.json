@@ -5,12 +5,23 @@
   "main": "index.js",
   "scripts": {
     "start": "func start",
+    "prestart": "npm install",
     "build": "echo 'No build step defined'",
     "test": "echo 'No tests defined'"
   },
   "author": "Your Name",
   "license": "MIT",
-  "dependencies": {
+  "keywords": [
+    "azure",
+    "functions",
+    "serverless",
+    "arise12"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/arise12-function-app.git"
+  },
+  "devDependencies": {
     "azure-functions-core-tools": "^4.0.5198"
   },
   "engines": {
