@@ -36,6 +36,15 @@ jobs:
         echo "Running tests (if applicable)..."
         npm run test --if-present || echo "Tests failed or not present."
 
+    # Add Azure login here
+    - name: 'Login to Azure'
+      uses: azure/login@v1
+      with:
+        # Use GitHub Secrets for your Azure credentials
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+
     - name: 'Deploy to Azure Function App'
       uses: Azure/functions-action@v1
       with:
